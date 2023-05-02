@@ -108,7 +108,7 @@ The subscriber can be assigned to any entity. The subscriber's function is to ma
 ```javascript
 // ------------------------------
 // subscribers/test.subscriber.ts
-import {LokiSubscriber, Loki} from '@marxlnfcs/nest-lokijs';
+import {LokiSubscriber, ILokiJSSubscriber} from '@marxlnfcs/nest-lokijs';
 import {TestEntity} from '../entities/test.entity.ts';
 
 @LokiSubscriber(TestEntity)
