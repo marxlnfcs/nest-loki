@@ -79,7 +79,7 @@ export class AppModule {}
 ```
 
 ---
-### Repository
+### Repositories
 The repository helps you to fetch the data from the database. This class works like a service and you can use the dependency injection.
 ```javascript
 // ------------------------------
@@ -103,7 +103,7 @@ export class AppModule {}
 ```
 
 ---
-### Repository
+### Subscribers
 The subscriber can be assigned to any entity. The subscriber's function is to manipulate the entities before they are returned from the repository or written to the database.
 ```javascript
 // ------------------------------
