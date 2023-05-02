@@ -1,6 +1,6 @@
 import {LokiJSInputValidationError} from "../exceptions/input-validation-error.exception";
 
-export type ILokiJSColumnType = 'Id'|'Text'|'Number'|'Boolean'|'Date'|'Array'|'KeyValue'|'Json'|'Updated'|'Created'|string;
+export type ILokiJSColumnType = 'Id'|'Text'|'Number'|'Boolean'|'Date'|'Array'|'Object'|'Any'|'Json'|'Updated'|'Created'|string;
 export type ILokiJSColumnDefault<DefaultValue = any> = DefaultValue|null|ILokiJSColumnDefaultFunction<DefaultValue>;
 export type ILokiJSColumnDefaultFunction<DefaultValue = any> = () => DefaultValue|null|Promise<DefaultValue>;
 export interface ILokiJSColumnOptions<DefaultValue = any> {
@@ -39,6 +39,7 @@ export interface ILokiJSColumnDateOptions extends ILokiJSColumnOptions<Date> {
 }
 export interface ILokiJSColumnArrayOptions extends ILokiJSColumnOptions<any[]> {}
 export interface ILokiJSColumnObjectOptions extends ILokiJSColumnOptions<object> {}
+export interface ILokiJSColumnAnyOptions extends ILokiJSColumnOptions<object> {}
 export interface ILokiJSColumnJsonOptions extends ILokiJSColumnOptions {}
 export interface ILokiJSColumnUpdatedOptions {
   includeColumns?: string[];

@@ -2,6 +2,7 @@ import {applyDecorators} from "@nestjs/common";
 import {createPropertyDecorator} from "../utils/decorators.utils";
 import {FeatureAddCollectionEntityColumn} from "../utils/lokijs.utils";
 import {
+  ILokiJSColumnAnyOptions,
   ILokiJSColumnArrayOptions,
   ILokiJSColumnBooleanOptions,
   ILokiJSColumnCreatedOptions,
@@ -151,7 +152,7 @@ export function LokiColumnArray(options?: ILokiJSColumnArrayOptions): PropertyDe
 export function LokiColumnObject(options?: ILokiJSColumnObjectOptions): PropertyDecorator {
   return applyDecorators(
     createPropertyDecorator((target, columnName) => FeatureAddCollectionEntityColumn<ILokiJSColumnObjectOptions>(target, {
-      type: 'KeyValue',
+      type: 'Object',
       name: columnName,
       options: options || {},
       default: options?.default,
@@ -164,6 +165,17 @@ export function LokiColumnObject(options?: ILokiJSColumnObjectOptions): Property
         }
         return true;
       }
+    })),
+  );
+}
+
+export function LokiColumnAny(options?: ILokiJSColumnAnyOptions): PropertyDecorator {
+  return applyDecorators(
+    createPropertyDecorator((target, columnName) => FeatureAddCollectionEntityColumn<ILokiJSColumnAnyOptions>(target, {
+      type: 'Any',
+      name: columnName,
+      options: options || {},
+      default: options?.default,
     })),
   );
 }

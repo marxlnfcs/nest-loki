@@ -1,7 +1,7 @@
 {
   "name": "@marxlnfcs/nest-lokijs",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A LokiJS Module for NestJS",
   "license": "MIT",
   "scripts": {
@@ -25,7 +25,7 @@
     "@nestjs/common": "^9.4.0",
     "@nestjs/core": "^9.4.0",
     "@nestjs/platform-express": "^9.4.0",
-    "barrelsby": "^2.5.1",
+    "barrelsby": "^2.7.0",
     "lodash": "^4.17.21",
     "lokijs": "^1.5.12",
     "reflect-metadata": "^0.1.13",
@@ -45,8 +45,8 @@
     "@types/slug": "^5.0.3",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
