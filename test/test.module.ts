@@ -1,17 +1,14 @@
 import {Test, TestingModule} from "@nestjs/testing";
-import {LokiJSModule} from "../src/lib/lokijs.module";
-import {LokiEntity} from "../src/lib/decorators/entity.decorator";
-import {LokiSubscriber} from "../src/lib/decorators/subscriber.decorator";
-import {ILokiJSSubscriber} from "../src/lib/interfaces/subscriber.interface";
-import {LokiRepository} from "../src/lib/decorators/repository.decorator";
-import {LokiJSRepository} from "../src/lib/models/repository.model";
 import {
+  ILokiJSSubscriber,
   LokiColumnBoolean,
   LokiColumnCreated,
   LokiColumnId,
   LokiColumnText,
-  LokiColumnUpdated
-} from "../src/lib/decorators/column.decorator";
+  LokiColumnUpdated,
+  LokiEntity,
+  LokiJSModule, LokiJSRepository, LokiRepository, LokiSubscriber
+} from "../src";
 
 export function createTestModule(): Promise<TestingModule> {
   return Test.createTestingModule({

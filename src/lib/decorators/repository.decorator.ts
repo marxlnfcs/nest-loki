@@ -6,29 +6,19 @@ import {
   FeatureSetCollectionEntity,
   FeatureSetType
 } from "../utils/lokijs.utils";
-import {createClassDecorator, createConstructor} from "../utils/decorators.utils";
+import {createClassDecorator} from "../utils/decorators.utils";
 import {LOKIJS_CONST_TOKEN_REPOSITORY} from "../lokijs.constants";
 import {getCollection, getCollectionDatabase} from "../lokijs.storage";
 import {ILokiJSRepositoryMetadata} from "../interfaces/repository.interface";
 
 export function LokiRepository<Entity extends object = any>(entity: Type<Entity>): ClassDecorator {
-  return (target: any) => {
-
-    // apply core decorators
-    applyDecorators(
-      Injectable(),
-      createClassDecorator((target: any) => {
-        FeatureSetType(target.prototype, 'repository');
-        FeatureSetCollectionEntity(target.prototype, entity);
-      })
-    )(target);
-
-    // create constructor wrapper
-    return createConstructor((instance: any) => {
-      CreateRepositoryMetadata(instance, entity);
-    })(target);
-
-  }
+  return applyDecorators(
+    Injectable(),
+    createClassDecorator((target: any) => {
+      FeatureSetType(target.prototype, 'repository');
+      FeatureSetCollectionEntity(target.prototype, entity);
+    })
+  );
 }
 
 export function InjectRepository<Entity extends object = any>(entity: Type<Entity>): ClassDecorator {

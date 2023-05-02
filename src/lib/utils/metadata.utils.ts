@@ -10,3 +10,8 @@ export function setMetadata<T = any>(key: string|symbol, value: T, target: any, 
   Reflect.defineMetadata(key, value, target, propertyKey);
   return getMetadata<T>(key, target, propertyKey);
 }
+
+/** @internal */
+export function getConstructorArguments(target: any): any[] {
+  return Reflect.getMetadata('design:type', target);
+}

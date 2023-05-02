@@ -2,11 +2,10 @@ import {ILokiJSConnection, ILokiJSOptions} from "./interfaces/options.interface"
 import * as Loki from "lokijs";
 import {Collection} from "lokijs";
 import * as slug from "slug";
-import {join} from "path";
+import {join, isAbsolute} from "path";
 import {LokiJSPersistenceAdapter} from "./adapters/persistent.adapter";
 import {LokiJSException} from "./models/exception.model";
 import {ILokiJSEntityOptions} from "./interfaces/entity.interface";
-import {LokiJSDatabase} from "./models/collection.model";
 import {ILokiJSColumn} from "./interfaces/column.interface";
 
 type CollectionStorage = { [name: string]: CollectionStorageItem };
@@ -47,7 +46,7 @@ export function getCollections(): CollectionStorageItem[] {
 }
 
 /** @internal */
-export function getCollectionDatabase(name: string): LokiJSDatabase|null {
+export function getCollectionDatabase(name: string): Loki|null {
   name = slug(name);
   return COLLECTIONS[name] ? COLLECTIONS[name].database : null;
 }
@@ -59,7 +58,9 @@ export function createCollection<Entity extends object = any>(name: string, opti
 
       // slugify collection name and set collection path
       const collectionName = slug(name);
-      const collectionFile = join(process.cwd(), options?.persistenceDataDir || 'database', `${collectionName}.db`);
+      const collectionFile = options?.persistenceDataDir && isAbsolute(options.persistenceDataDir)
+        ? join(options.persistenceDataDir, `${collectionName}.db`)
+        : join(process.cwd(), options?.persistenceDataDir || 'database', `${collectionName}.db`);
 
       // return collection if already exists
       if(Object.keys(COLLECTIONS).includes(collectionName)) {

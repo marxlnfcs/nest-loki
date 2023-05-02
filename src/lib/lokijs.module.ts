@@ -13,9 +13,10 @@ import {
 } from "./lokijs.constants";
 import {flatten} from "lodash";
 import {LokiJSRepository} from "./models/repository.model";
-import {getMetadata} from "./utils/metadata.utils";
+import {getConstructorArguments, getMetadata} from "./utils/metadata.utils";
 import {ILokiJSSubscriber} from "./interfaces/subscriber.interface";
 import {
+  FeatureAddCollectionSubscriber,
   FeatureGetCollectionEntity,
   FeatureGetCollectionEntityColumns,
   FeatureGetCollectionName,
@@ -54,7 +55,7 @@ export class LokiJSModule {
    * Method to add features like Repository, Subscribers or Entities
    * @param args
    */
-  static async forFeature(...args: Array<ILokiJSFeature|ILokiJSFeature[]>): Promise<DynamicModule> {
+  static forFeature(...args: Array<ILokiJSFeature|ILokiJSFeature[]>): DynamicModule {
 
     // flatten features
     const features = flatten(args);
@@ -65,9 +66,9 @@ export class LokiJSModule {
     const subscribers = features.filter(f => this.getFeatureType(f) === 'subscriber');
 
     // create providers
-    const subscriberProviders = flatten(await Promise.all(subscribers.map(f => this.createSubscriberProviders(f as any))));
-    const repositoryProviders = flatten(await Promise.all(repositories.map(f => this.createRepositoryProviders(f as any))));
-    const entityProviders = flatten(await Promise.all(entities.map(f => this.createEntityProviders(f as any))));
+    const subscriberProviders = flatten(subscribers.map(f => this.createSubscriberProviders(f as any)));
+    const repositoryProviders = flatten(repositories.map(f => this.createRepositoryProviders(f as any)));
+    const entityProviders = flatten(entities.map(f => this.createEntityProviders(f as any)));
     const providers: Provider[] = flatten([subscriberProviders, repositoryProviders, entityProviders]);
 
     // create module
@@ -85,19 +86,22 @@ export class LokiJSModule {
   }
 
   /** Create entity providers */
-  private static async createEntityProviders(entity: Type): Promise<Provider[]> {
+  private static createEntityProviders(entity: Type): Provider[] {
+
+    // get required data
+    const collectionName = FeatureGetCollectionName(entity.prototype);
 
     // create array from providers
     const providers: Provider[] = [];
 
     // add collection to providers
     providers.push({
-      provide: LOKIJS_CONST_TOKEN_COLLECTION(FeatureGetCollectionName(entity.prototype)),
+      provide: LOKIJS_CONST_TOKEN_COLLECTION(collectionName),
       useFactory: async (options) => {
 
         // create collection
         const collection = await createCollection(
-          FeatureGetCollectionName(entity.prototype),
+          collectionName,
           options,
           FeatureGetCollectionOptions(entity.prototype),
           FeatureGetCollectionEntityColumns(entity.prototype),
@@ -125,14 +129,18 @@ export class LokiJSModule {
   }
 
   /** Create repository providers */
-  private static async createRepositoryProviders(repository: Type<LokiJSRepository>): Promise<Provider[]> {
+  private static createRepositoryProviders(repository: Type<LokiJSRepository>): Provider[] {
     if(FeatureGetCollectionEntity(repository.prototype)){
 
       // create providers
       const providers: Provider[] = [];
 
       // add provider to array
-      providers.push(repository);
+      providers.push({
+        provide: repository,
+        useFactory: (...args: any[]) => CreateRepositoryMetadata(new repository(...args), FeatureGetCollectionEntity(repository.prototype)),
+        inject: getConstructorArguments(repository.prototype)
+      });
 
       // return providers
       return providers;
@@ -142,14 +150,22 @@ export class LokiJSModule {
   }
 
   /** Create subscriber providers */
-  private static async createSubscriberProviders(subscriber: Type<ILokiJSSubscriber>): Promise<Provider[]> {
+  private static createSubscriberProviders(subscriber: Type<ILokiJSSubscriber>): Provider[] {
     if(FeatureGetCollectionEntity(subscriber.prototype)){
 
       // create providers
       const providers: Provider[] = [];
 
       // add provider to array
-      providers.push(subscriber);
+      providers.push({
+        provide: subscriber,
+        useFactory: (...args: any[]) => {
+          const instance = CreateRepositoryMetadata(new subscriber(...args), FeatureGetCollectionEntity(subscriber.prototype));
+          FeatureAddCollectionSubscriber(FeatureGetCollectionEntity(subscriber.prototype).prototype, instance);
+          return instance;
+        },
+        inject: getConstructorArguments(subscriber.prototype)
+      });
 
       // return providers
       return providers;
@@ -166,7 +182,7 @@ export class LokiJSCoreModule {
    * Initializes the base functionalities
    * @param options
    */
-  static forRoot(options?: ILokiJSModuleOptions): Promise<DynamicModule> {
+  static forRoot(options?: ILokiJSModuleOptions): DynamicModule {
     return this.forRootAsync({
       useFactory: () => options,
     });
@@ -176,7 +192,7 @@ export class LokiJSCoreModule {
    * Initialized the base functionalities async
    * @param options
    */
-  static async forRootAsync(options?: ILokiJSModuleAsyncOptions): Promise<DynamicModule> {
+  static forRootAsync(options?: ILokiJSModuleAsyncOptions): DynamicModule {
 
     // create array for providers
     const providers: Provider[] = [

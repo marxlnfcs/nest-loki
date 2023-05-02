@@ -17,7 +17,6 @@ export * from './lib/interfaces/entity.interface';
 export * from './lib/interfaces/options.interface';
 export * from './lib/interfaces/repository.interface';
 export * from './lib/interfaces/subscriber.interface';
-export * from './lib/models/collection.model';
 export * from './lib/models/exception.model';
 export * from './lib/models/repository.model';
 export * from './lib/utils/common.utils';
