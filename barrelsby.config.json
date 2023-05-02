@@ -1,0 +1,10 @@
+{
+  "directory": "./src",
+  "delete": true,
+  "noHeader": true,
+  "location": "top",
+  "singleQuotes": true,
+  "mode": "flat",
+  "name": "index.ts",
+  "exclude": "./index.ts"
+}
