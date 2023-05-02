@@ -8,7 +8,7 @@
 > **Warning**
 > This library is for experimentation and may contain some bugs that I will remove from time to time.
 > With this library I'm learning how dependency injection works and how to build such libraries according to "best practice".
-> 
+>
 > So please use this library with caution.
 
 ## Installation
@@ -22,11 +22,11 @@ npm i @marxlnfcs/nest-lokijs
 @Module({
     imports: [
         LokiJSModule.forRoot({
-          ...
+            ...
         }),
         LokiJSModule.forRootAsync({
             useFactory: (configService: ConfigService) => ({
-              ...
+                ...
             }),
             inject: [ConfigService]
         })
@@ -42,38 +42,38 @@ The entity is a model definition, that will be stored in the database.
 ```javascript
 // ------------------------------
 // entities/test.entity.ts
-import {LokiEntity} from '@marxlnfcs/lokijs';
+import {LokiEntity} from '@marxlnfcs/nest-lokijs';
 import {LokiColumnBoolean, LokiColumnCreated, LokiColumnId, LokiColumnText, LokiColumnUpdated} from "../src/lib/decorators/column.decorator";
 
 @LokiEntity('<collection-name>')
 export class TestEntity {
     @LokiColumnId()
     id: string;
-    
+
     @LokiColumnText()
     name: string;
-    
+
     @LokiColumnText({ nullable: true })
     source: string|null;
-    
+
     @LokiColumnBoolean({ default: false })
     enabled: boolean;
-    
+
     @LokiColumnUpdated()
     updated: Date;
-    
+
     @LokiColumnCreated()
     created: Date;
 }
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
 
 @Module({
-  imports: [
-    LokiJSModule.forFeature(TestEntity)
-  ]
+    imports: [
+        LokiJSModule.forFeature(TestEntity)
+    ]
 })
 export class AppModule {}
 ```
@@ -84,7 +84,7 @@ The repository helps you to fetch the data from the database. This class works l
 ```javascript
 // ------------------------------
 // repositories/test.repository.ts
-import {LokiRepository, LokiJSRepository} from '@marxlnfcs/lokijs';
+import {LokiRepository, LokiJSRepository} from '@marxlnfcs/nest-lokijs';
 import {TestEntity} from '../entities/test.entity.ts';
 
 @LokiRepository(TestEntity)
@@ -92,7 +92,7 @@ export class TestRepository extends LokiJSRepository<TestEntity> {}
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
 
 @Module({
   imports: [
@@ -108,7 +108,7 @@ The subscriber can be assigned to any entity. The subscriber's function is to ma
 ```javascript
 // ------------------------------
 // subscribers/test.subscriber.ts
-import {LokiSubscriber, Loki} from '@marxlnfcs/lokijs';
+import {LokiSubscriber, Loki} from '@marxlnfcs/nest-lokijs';
 import {TestEntity} from '../entities/test.entity.ts';
 
 @LokiSubscriber(TestEntity)
@@ -123,12 +123,12 @@ export class TestSubscriber extends ILokiJSSubscriber<TestEntity> {
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
 
 @Module({
-  imports: [
-    LokiJSModule.forFeature(TestSubscriber)
-  ]
+    imports: [
+        LokiJSModule.forFeature(TestSubscriber)
+    ]
 })
 export class AppModule {}
 ```
