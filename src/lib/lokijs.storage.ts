@@ -74,7 +74,7 @@ export function createCollection<Entity extends object = any>(name: string, opti
         autosave: true,
         autosaveCallback: (err) => {
           if(typeof options?.onSaved === 'function'){
-            options.onSaved(err);
+            options.onSaved(err, database.filename);
           }
         },
         serializationMethod: 'pretty',

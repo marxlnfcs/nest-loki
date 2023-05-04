@@ -58,13 +58,13 @@ export class LokiJSPersistenceAdapter implements LokiPersistenceAdapter {
     this.getAdapter().loadCollection(databaseFile)
       .then(data => {
         if(isFunction(this.options?.onLoaded)){
-          this.options.onLoaded();
+          this.options.onLoaded(null, databaseFile);
         }
         callback(this.options.encrypted && this.options.encryptedSecret ? decryptAES(this.options.encryptedSecret, data.replace(/\n/g, '')) : data);
       })
       .catch(err => {
         if(isFunction(this.options?.onLoaded)){
-          this.options.onLoaded(err);
+          this.options.onLoaded(err, null);
         }
         callback(null);
       });
@@ -76,13 +76,13 @@ export class LokiJSPersistenceAdapter implements LokiPersistenceAdapter {
       this.getAdapter().saveCollection(databaseFile, databaseData)
         .then(() => {
           if(isFunction(this.options?.onSaved)){
-            this.options.onSaved();
+            this.options.onSaved(null, databaseFile);
           }
           callback();
         })
         .catch(err => {
           if(isFunction(this.options?.onSaved)){
-            this.options.onSaved(err);
+            this.options.onSaved(err, databaseFile);
           }
           callback(err);
         });

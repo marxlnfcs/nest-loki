@@ -1,9 +1,9 @@
 # LokiJS-ORM Module for NestJS
 
-[![npm](https://ico.y.gy/npm/dm/@marxlnfcs/nest-lokijs?style=flat-square&logo=npm)](https://www.npmjs.com/package/@marxlnfcs/nest-lokijs)
-[![NPM](https://ico.y.gy/npm/l/@marxlnfcs/nest-lokijs?style=flat-square&color=brightgreen)](https://www.npmjs.com/package/@marxlnfcs/nest-lokijs)
-[![Snyk Vulnerabilities for npm package](https://ico.y.gy/snyk/vulnerabilities/npm/@marxlnfcs/nest-lokijs?style=flat-square&logo=snyk)](https://snyk.io/test/npm/@marxlnfcs/nest-lokijs)
-[![Website](https://ico.y.gy/website?down_color=red&down_message=offline&label=repository&up_color=success&up_message=online&url=https%3A%2F%2Fgithub.com%2Fmarxlnfcs%2Fnest-lokijs&style=flat-square&logo=github)](https://github.com/marxlnfcs/nest-lokijs)
+[![npm](https://ico.y.gy/npm/dm/@marxlnfcs/nest-loki?style=flat-square&logo=npm)](https://www.npmjs.com/package/@marxlnfcs/nest-loki)
+[![NPM](https://ico.y.gy/npm/l/@marxlnfcs/nest-loki?style=flat-square&color=brightgreen)](https://www.npmjs.com/package/@marxlnfcs/nest-loki)
+[![Snyk Vulnerabilities for npm package](https://ico.y.gy/snyk/vulnerabilities/npm/@marxlnfcs/nest-loki?style=flat-square&logo=snyk)](https://snyk.io/test/npm/@marxlnfcs/nest-loki)
+[![Website](https://ico.y.gy/website?down_color=red&down_message=offline&label=repository&up_color=success&up_message=online&url=https%3A%2F%2Fgithub.com%2Fmarxlnfcs%2Fnest-loki&style=flat-square&logo=github)](https://github.com/marxlnfcs/nest-loki)
 
 > **Warning**
 > This library is for experimentation and may contain some bugs that I will remove from time to time.
@@ -13,7 +13,7 @@
 
 ## Installation
 ```
-npm i @marxlnfcs/nest-lokijs
+npm i @marxlnfcs/nest-loki
 ```
 
 ## Usage
@@ -42,7 +42,7 @@ The entity is a model definition, that will be stored in the database.
 ```javascript
 // ------------------------------
 // entities/test.entity.ts
-import {LokiEntity} from '@marxlnfcs/nest-lokijs';
+import {LokiEntity} from '@marxlnfcs/nest-loki';
 import {LokiColumnBoolean, LokiColumnCreated, LokiColumnId, LokiColumnText, LokiColumnUpdated} from "../src/lib/decorators/column.decorator";
 
 @LokiEntity('<collection-name>')
@@ -68,7 +68,7 @@ export class TestEntity {
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-loki';
 
 @Module({
     imports: [
@@ -84,7 +84,7 @@ The repository helps you to fetch the data from the database. This class works l
 ```javascript
 // ------------------------------
 // repositories/test.repository.ts
-import {LokiRepository, LokiJSRepository} from '@marxlnfcs/nest-lokijs';
+import {LokiRepository, LokiJSRepository} from '@marxlnfcs/nest-loki';
 import {TestEntity} from '../entities/test.entity.ts';
 
 @LokiRepository(TestEntity)
@@ -92,7 +92,7 @@ export class TestRepository extends LokiJSRepository<TestEntity> {}
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-loki';
 
 @Module({
   imports: [
@@ -108,7 +108,7 @@ The subscriber can be assigned to any entity. The subscriber's function is to ma
 ```javascript
 // ------------------------------
 // subscribers/test.subscriber.ts
-import {LokiSubscriber, ILokiJSSubscriber} from '@marxlnfcs/nest-lokijs';
+import {LokiSubscriber, ILokiJSSubscriber} from '@marxlnfcs/nest-loki';
 import {TestEntity} from '../entities/test.entity.ts';
 
 @LokiSubscriber(TestEntity)
@@ -123,7 +123,7 @@ export class TestSubscriber extends ILokiJSSubscriber<TestEntity> {
 
 // ------------------------------
 // app.module.ts
-import {LokiJSModule} from '@marxlnfcs/nest-lokijs';
+import {LokiJSModule} from '@marxlnfcs/nest-loki';
 
 @Module({
     imports: [

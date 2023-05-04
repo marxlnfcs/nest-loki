@@ -7,10 +7,26 @@ import {
 import {cloneDeep} from "lodash";
 import {GetRepositoryMetadata} from "../decorators/repository.decorator";
 import {ILokiJSQuery} from "../interfaces/repository.interface";
+import {Collection} from "lokijs";
+import * as Loki from 'lokijs';
 
 export class LokiJSRepository<Entity extends object = any> {
   /** @internal */
   get __metadata__(){ return GetRepositoryMetadata(this) }
+
+  /**
+   * Returns the LokiJS collection
+   */
+  getCollection(): Collection<Entity> {
+    return this.__metadata__.collection;
+  }
+
+  /**
+   * Returns the LokiJS database where the collection is stored in
+   */
+  getCollectionDatabase(): Loki {
+    return this.__metadata__.database;
+  }
 
   /**
    * Returns a new entity
@@ -186,7 +202,10 @@ export class LokiJSRepository<Entity extends object = any> {
         for(let subscriber of this.__metadata__.subscribers.filter(s => executeSubscribers && isFunction(s.afterInsert))){
           entity = (await subscriber.afterInsert(entity as Entity)) || entity;
         }
-        
+
+        // commit database
+        await this.commit();
+
         // return the entity
         resolve(entity as Entity);
         
@@ -245,6 +264,9 @@ export class LokiJSRepository<Entity extends object = any> {
           entity[column.name] = value;
         }
 
+        // commit database
+        await this.commit();
+
         // resolve entity
         resolve(entity);
 
@@ -297,6 +319,9 @@ export class LokiJSRepository<Entity extends object = any> {
           updated.push(entity);
 
         }
+
+        // commit database
+        await this.commit();
 
         // return updated entities
         resolve(updated);
@@ -351,6 +376,9 @@ export class LokiJSRepository<Entity extends object = any> {
           entity[column.name] = value;
         }
 
+        // commit database
+        await this.commit();
+
         // resolve entity
         resolve(entity);
 
@@ -390,10 +418,25 @@ export class LokiJSRepository<Entity extends object = any> {
           // add entity to array
           deleted.push(entity);
         }
+
+        // commit database
+        await this.commit();
+
+        // resolve deleted
         resolve(deleted);
+
       }catch(e){
         reject(e);
       }
+    });
+  }
+
+  /**
+   * Saves the collection
+   */
+  private commit(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      this.__metadata__.database.saveDatabase((error) => error ? reject(error) : resolve());
     });
   }
 

@@ -9,8 +9,8 @@ export interface ILokiJSOptions {
   encryptedSecret?: string;
   throttledSaves?: boolean;
 
-  onLoaded?: (err?: any) => void;
-  onSaved?: (err?: any) => void;
+  onLoaded?: (err: Error|null, collectionFile: string|null) => void;
+  onSaved?: (err: Error|null, collectionFile: string|null) => void;
 }
 
 export type ILokiJSConnection = 'default'|string;
