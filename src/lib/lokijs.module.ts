@@ -34,9 +34,11 @@ export class LokiJSModule {
    * @param options
    */
   static forRoot(options?: ILokiJSModuleOptions): DynamicModule {
+    const modules: any[] = [LokiJSCoreModule.forRoot(options)];
     return {
       module: LokiJSModule,
-      imports: [LokiJSCoreModule.forRoot(options)]
+      imports: modules,
+      exports: modules,
     }
   }
 
@@ -45,9 +47,11 @@ export class LokiJSModule {
    * @param options
    */
   static forRootAsync(options?: ILokiJSModuleAsyncOptions): DynamicModule {
+    const modules: any[] = [LokiJSCoreModule.forRootAsync(options)];
     return {
       module: LokiJSModule,
-      imports: [LokiJSCoreModule.forRootAsync(options)]
+      imports: modules,
+      exports: modules,
     }
   }
 
