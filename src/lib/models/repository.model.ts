@@ -126,6 +126,9 @@ export class LokiJSRepository<Entity extends object = any> {
     return new Promise<Entity>(async (resolve, reject) => {
       try{
         for(let column of this.__metadata__.columns) {
+          if(isUndefined(entity[column.name])){
+            entity[column.name] = !isNil(column.default) ? column.default : column.options?.nullable ? null : entity[column.name];
+          }
           if(isFunction(column.onRead)){
              const value = await column.onRead(column?.options || {}, entity[column.name] ?? null);
              if(!isUndefined(value)){
