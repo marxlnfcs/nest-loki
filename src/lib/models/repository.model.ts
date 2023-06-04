@@ -7,8 +7,8 @@ import {
 import {cloneDeep} from "lodash";
 import {GetRepositoryMetadata} from "../decorators/repository.decorator";
 import {ILokiJSQuery} from "../interfaces/repository.interface";
+import * as Loki from "lokijs";
 import {Collection} from "lokijs";
-import * as Loki from 'lokijs';
 
 export class LokiJSRepository<Entity extends object = any> {
   /** @internal */
@@ -244,11 +244,11 @@ export class LokiJSRepository<Entity extends object = any> {
           }
 
           if(isNil(value) && !column.options?.nullable){
-            throw new LokiJSInputValidationNotNullableError(column.name);
+            throw new LokiJSInputValidationNotNullableError(entity['name'], column.name);
           }
 
           if(isFunction(column?.validator) && !await column.validator(column.options || {}, value)){
-            throw new LokiJSInputValidationError(`Value does not meet the requirements of column "${column.type}"`);
+            throw new LokiJSInputValidationError(`Value does not meet the requirements of column "${entity['name']}.${column.type}"`);
           }
 
           if(isFunction(column?.onInsert)){
@@ -356,11 +356,11 @@ export class LokiJSRepository<Entity extends object = any> {
           let value = !isNil(dto?.[colName]) ? dto[colName] : null;
 
           if(isNil(value) && !column.options?.nullable){
-            throw new LokiJSInputValidationNotNullableError(column.name);
+            throw new LokiJSInputValidationNotNullableError(entity['name'], column.name);
           }
 
           if(isFunction(column?.validator) && !await column.validator(column.options || {}, value)){
-            throw new LokiJSInputValidationError(`Value does not meet the requirements of column "${column.type}"`);
+            throw new LokiJSInputValidationError(`Value does not meet the requirements of column "${entity['name']}.${column.type}"`);
           }
 
           if(isFunction(column?.onUpdate)){

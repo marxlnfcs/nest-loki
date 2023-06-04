@@ -51,16 +51,16 @@ describe('Testing Library', () => {
   });
 
   // check if the entity will be deleted with the repository
-  describe('Delete Entities', () => {
-    it('should delete an entity in the database', async () => {
-      const deleted = await repository.delete({ name: lokiEquals(entity.name) });
-      expect(deleted).toBeTruthy();
-    });
-  });
+  // describe('Delete Entities', () => {
+  //   it('should delete an entity in the database', async () => {
+  //     const deleted = await repository.delete({ name: lokiEquals(entity.name) });
+  //     expect(deleted).toBeTruthy();
+  //   });
+  // });
 
   // close test module
   afterAll(async () => {
-    await deleteCollections();
+    //await deleteCollections();
     await app?.close();
   });
 

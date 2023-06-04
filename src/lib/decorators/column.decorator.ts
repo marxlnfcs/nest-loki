@@ -48,11 +48,11 @@ export function LokiColumnText(options?: ILokiJSColumnTextOptions): PropertyDeco
         if(value !== undefined && value !== null){
           switch(true) {
             case (typeof value !== 'string'):
-              return new LokiJSInputValidationWrongTypeError(columnName, 'string', typeof value);
+              return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'string', typeof value);
             case (options?.minLength && value.length < options.minLength):
-              return new LokiJSInputValidationExpressionError(columnName, `Text length needs to be less or equal ${options.minLength}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Text length needs to be less or equal ${options.minLength}`);
             case (options?.maxLength && value.length > options.maxLength):
-              return new LokiJSInputValidationExpressionError(columnName, `Text length needs to be larger or equal ${options.minLength}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Text length needs to be larger or equal ${options.minLength}`);
           }
         }
         return true;
@@ -72,11 +72,11 @@ export function LokiColumnNumber(options?: ILokiJSColumnNumberOptions): Property
         if(value !== undefined && value !== null){
           switch(true){
             case typeof value !== 'number':
-              return new LokiJSInputValidationWrongTypeError(columnName, 'number', typeof value);
+              return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'number', typeof value);
             case (options?.min && value < options.min):
-              return new LokiJSInputValidationExpressionError(columnName, `Number needs to be less or equal ${options.min}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Number needs to be less or equal ${options.min}`);
             case (options?.max && value > options.max):
-              return new LokiJSInputValidationExpressionError(columnName, `Number needs to be larger or equal ${options.max}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Number needs to be larger or equal ${options.max}`);
           }
         }
         return true;
@@ -96,7 +96,7 @@ export function LokiColumnBoolean(options?: ILokiJSColumnBooleanOptions): Proper
         if(value !== undefined && value !== null){
           switch(true) {
             case (typeof value !== 'boolean'):
-              return new LokiJSInputValidationWrongTypeError(columnName, 'boolean', typeof value);
+              return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'boolean', typeof value);
           }
         }
         return true;
@@ -116,11 +116,11 @@ export function LokiColumnDate(options?: ILokiJSColumnDateOptions): PropertyDeco
         if(value !== undefined && value !== null){
           switch(true){
             case !(value instanceof Date):
-              return new LokiJSInputValidationWrongTypeError(columnName, 'Date', typeof value);
+              return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'Date', typeof value);
             case (options?.min && value.getTime() < options.min.getTime()):
-              return new LokiJSInputValidationExpressionError(columnName, `Date must to be less or equal ${options.min.toString()}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Date must to be less or equal ${options.min.toString()}`);
             case (options?.max && value.getTime() > options.max.getTime()):
-              return new LokiJSInputValidationExpressionError(columnName, `Date must to be larger or equal ${options.max.toString()}`);
+              return new LokiJSInputValidationExpressionError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, `Date must to be larger or equal ${options.max.toString()}`);
           }
         }
         return true;
@@ -140,7 +140,7 @@ export function LokiColumnArray(options?: ILokiJSColumnArrayOptions): PropertyDe
       validator: (options, value) => {
         if(value !== undefined && value !== null){
           switch(true){
-            case !Array.isArray(value): return new LokiJSInputValidationWrongTypeError(columnName, 'object', typeof value);
+            case !Array.isArray(value): return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'object', typeof value);
           }
         }
         return true;
@@ -159,8 +159,8 @@ export function LokiColumnObject(options?: ILokiJSColumnObjectOptions): Property
       validator: (options, value) => {
         if(value !== undefined && value !== null){
           switch(true){
-            case Array.isArray(value): return new LokiJSInputValidationWrongTypeError(columnName, 'object', 'array');
-            case typeof value !== 'object': return new LokiJSInputValidationWrongTypeError(columnName, 'object', typeof value);
+            case Array.isArray(value): return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'object', 'array');
+            case typeof value !== 'object': return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'object', typeof value);
           }
         }
         return true;
@@ -190,7 +190,7 @@ export function LokiColumnJson(options?: ILokiJSColumnJsonOptions): PropertyDeco
       validator: (options, value) => {
         if(value !== undefined && value !== null){
           if(typeof value !== 'string' || typeof value !== 'object'){
-            return new LokiJSInputValidationWrongTypeError(columnName, 'object|string', typeof value);
+            return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'object|string', typeof value);
           }
         }
         return true;
@@ -227,7 +227,7 @@ export function LokiColumnUpdated(options?: ILokiJSColumnUpdatedOptions): Proper
       validator: (options, value) => {
         if(value !== undefined && value !== null) {
           if (!(value instanceof Date)) {
-            return new LokiJSInputValidationWrongTypeError(columnName, 'date', typeof value);
+            return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'date', typeof value);
           }
         }
         return true;
@@ -264,7 +264,7 @@ export function LokiColumnCreated(options?: ILokiJSColumnCreatedOptions): Proper
       validator: (options, value) => {
         if(value !== undefined && value !== null) {
           if (!(value instanceof Date)) {
-            return new LokiJSInputValidationWrongTypeError(columnName, 'date', typeof value);
+            return new LokiJSInputValidationWrongTypeError(target['prototype'] ? target['prototype']['name'] : target['name'], columnName, 'date', typeof value);
           }
         }
         return true;
