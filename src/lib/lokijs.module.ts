@@ -1,4 +1,4 @@
-import {DynamicModule, Global, Module, Provider, Type} from "@nestjs/common";
+import {DynamicModule, Provider, Type} from "@nestjs/common";
 import {
   ILokiJSFeature,
   ILokiJSFeatureType,
@@ -23,7 +23,7 @@ import {
   FeatureGetCollectionOptions,
   FeatureSetCollection
 } from "./utils/lokijs.utils";
-import {createCollection, createConnectionOptions, getConnectionOptions} from "./lokijs.storage";
+import {createCollection, createConnectionOptions} from "./lokijs.storage";
 import {CreateRepositoryMetadata} from "./decorators/repository.decorator";
 import {LokiJSService} from "./lokijs.service";
 
